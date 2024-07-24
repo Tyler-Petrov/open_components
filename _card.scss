@@ -1,0 +1,36 @@
+@import '../mixins';
+
+:where(.card) {
+    @include brand-border;
+
+    border-radius: var(--radius-3);
+    background-color: var(--surface-2);
+    padding: corrected-text-padding(var(--size-3));
+    box-shadow: var(--shadow-1);
+
+    :where(&, & *):where(a[href]) {
+        color: var(--text-1);
+    }
+
+    .title {
+        font-size: var(--font-size-3);
+        font-weight: bold;
+    }
+
+    &:not(.no-hover) {
+        $default-transition: 200ms var(--ease-in-out-3);
+        transition: background-color $default-transition, box-shadow $default-transition
+            /*, border 100ms var(--ease-in-out-3) */
+        ;
+
+        &:hover {
+            cursor: pointer;
+
+            @media (prefers-reduced-motion:no-preference) {
+                background-color: mix-colors(var(--hover-bg-color, var(--brand)), 20%);
+                box-shadow: var(--shadow-2);
+                // border-width: 3px;
+            }
+        }
+    }
+}

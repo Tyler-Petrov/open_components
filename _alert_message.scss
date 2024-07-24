@@ -1,0 +1,76 @@
+:where(.alert-message) {
+    --base-color: var(--cyan-8);
+    // --animation-duration: 10s;
+
+    &.warning {
+        --base-color: var(--yellow-8);
+    }
+
+    &.error {
+        --base-color: var(--red-8);
+    }
+
+    &.success {
+        --base-color: var(--green-8);
+    }
+
+    pointer-events: all;
+    // user-select: none;
+    position: relative;
+
+    background-color: mix-colors(var(--base-color), 30%, var(--surface-1));
+    border-radius: var(--radius-3);
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+
+    color: mix-colors(var(--base-color), 25%, var(--text-1));
+
+    padding: corrected-text-padding(var(--size-3));
+    gap: var(--size-3);
+    margin-top: var(--size-3);
+
+    .icon {
+        display: flex;
+        align-items: center; // Center children vertically
+
+        i.fa {
+            font-size: 2rem;
+        }
+    }
+
+    .title-row {
+        max-width: 60ch;
+    }
+
+    button.dismiss {
+        display: none;
+
+        @media (hover: hover) {
+            display: flex;
+            align-items: center; // Center children vertically
+
+            box-shadow: none;
+            font-size: var(--font-size-4);
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+
+        animation: clipProgressBar var(--animation-duration) linear forwards;
+        animation-play-state: running;
+
+        @include brand-border;
+        --border-color: var(--base-color);
+        border-radius: inherit;
+    }
+
+    &:hover::after {
+        animation-play-state: paused;
+    }
+
+}

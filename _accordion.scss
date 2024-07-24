@@ -1,0 +1,85 @@
+:where(.accordion) {
+    --accordion-animation-duration: 200ms;
+
+    @media (prefers-reduced-motion:reduce) {
+        --accordion-animation-duration: 0ms;
+    }
+
+    border-radius: var(--radius-3);
+    --accordion-bg: var(--surface-2);
+    --default-background-color: var(--accordion-bg);
+    background-color: var(--accordion-bg);
+
+    @media (prefers-reduced-motion:no-preference) {
+        &.show {
+            .header {
+                background-color: var(--accordion-active-bg, var(--surface-3));
+
+                &::after {
+                    color: var(--accordion-chevron-color, var(--brand));
+                    rotate: -180deg;
+                }
+            }
+        }
+    }
+
+    &>.header {
+        display: flex;
+        gap: var(--size-2);
+        align-items: center;
+        user-select: none;
+
+        // override default for heading
+        max-inline-size: none;
+
+        color: var(--accordion-header-text-color);
+
+        cursor: pointer;
+        padding: corrected-text-padding(var(--size-4));
+        border-radius: inherit;
+
+        @media (prefers-reduced-motion:no-preference) {
+            transition: var(--accordion-animation-duration) var(--ease-in-out-3);
+            transition-property: background-color color;
+        }
+
+        &::after {
+            margin-left: auto;
+            font-size: 1.25rem;
+            // Move icon up half the amount removed for text bounding box
+            margin-top: calc(var(--text-bounding-box-size) / 2);
+
+            transition: rotate calc(var(--accordion-animation-duration) * 1.5) var(--ease-out-3), color var(--accordion-animation-duration) var(--ease-in-out-3);
+
+            // Font Awesome icon styling
+            content: "\f078"; // Chevron Up Down
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+    }
+
+    &>.body {
+        padding: corrected-text-padding(var(--size-5));
+    }
+
+
+    // Alternatives
+    @mixin alternative-color($name, $color-base: $name) {
+        &.#{$name} {
+            --mixing-color: var(--#{$color-base}-3);
+            --accordion-header-text-color: var(--#{$color-base}-12);
+
+            @media (prefers-color-scheme: dark) {
+                --mixing-color: var(--#{$color-base}-9);
+                --accordion-header-text-color: var(--#{$color-base}-1);
+            }
+
+            --accordion-bg: #{mix-colors(var(--mixing-color), 20%, var(--surface-1))};
+            --accordion-active-bg: #{mix-colors(var(--mixing-color), 40%, var(--surface-1))};
+            --accordion-chevron-color: #{mix-colors(var(--mixing-color), 60%, var(--text-1))};
+        }
+    }
+
+    @include alternative-color($name: "danger", $color-base: "red");
+    @include alternative-color($name: "important", $color-base: "cyan");
+}

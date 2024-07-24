@@ -1,0 +1,43 @@
+:where(.title-row) {
+    &.block {
+        --bottom-space: var(--size-1);
+    }
+
+    &:not(.block)>* {
+        display: inline;
+    }
+
+    .main,
+    :where(&>:first-child) {
+        margin-right: var(--size-2);
+        opacity: 1;
+        margin-bottom: var(--bottom-space);
+    }
+
+    :is(.sub, .subtitle),
+    :where(&>:nth-child(2)) {
+        opacity: .8;
+
+        &:where(p) {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+    }
+
+    // .sub,
+    // .subtitle,
+    // >:nth-child(2) {
+    //     opacity: .8;
+
+    //     &:where(p) {
+    //         font-size: 1rem;
+    //         font-weight: 500;
+    //     }
+    // }
+
+    // &:not(.block) :is(.sub,
+    //     .subtitle,
+    //     >:nth-child(2)) {
+    //     line-height: var(--font-lineheight-00);
+    // }
+}

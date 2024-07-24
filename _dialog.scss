@@ -1,0 +1,159 @@
+:where(body) {
+    --modal-animation-duration: 400ms;
+    --animation-curve: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    @media (prefers-reduced-motion:reduce) {
+        --modal-animation-duration: 0ms;
+    }
+
+    &:has(dialog[open]) main {
+        animation: scaleBack var(--modal-animation-duration) var(--animation-curve) forwards;
+    }
+
+    &:has(dialog.closing) main {
+        animation: scaleForward var(--modal-animation-duration) var(--animation-curve) forwards;
+    }
+
+    @media (prefers-reduced-motion:no-preference) {
+        @keyframes scaleBack {
+            0% {
+                scale: 100%;
+            }
+
+            100% {
+                scale: 85%;
+            }
+        }
+
+        @keyframes scaleForward {
+            0% {
+                scale: 85%;
+            }
+
+            100% {
+                scale: 100%;
+            }
+        }
+    }
+
+    dialog {
+        padding: 0;
+        width: max(50vw, 40rem);
+        overflow: visible;
+
+        container-name: dialog;
+        container-type: inline-size;
+
+        flex-direction: column;
+
+        &>.title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: corrected-text-padding(var(--size-5));
+
+            .close-modal {
+                font-size: 1.75rem;
+                padding: 0;
+                aspect-ratio: 1;
+
+                @media (prefers-reduced-motion:no-preference) {
+                    &:not(:hover) {
+                        opacity: 80%;
+                    }
+                }
+            }
+        }
+
+        &:focus-visible {
+            --focus-drop-shadow: none
+        }
+
+        &::backdrop {
+            // Default properties overridden by animation
+            opacity: 50%;
+
+            background-color: hsl(0, 0%, 10%);
+            animation: fadeInBackdrop var(--modal-animation-duration) var(--animation-curve) forwards;
+        }
+
+        &.closing::backdrop {
+            animation: fadeOutBackdrop var(--modal-animation-duration) var(--animation-curve) forwards;
+        }
+
+        &:not([open]) {
+            /* Ensures dialog isn't clickable when closed */
+            pointer-events: none;
+        }
+
+        &[open] {
+            display: flex;
+
+            // Default properties overridden by animation
+            opacity: 1;
+            transform: scale(1) translateY(0px);
+
+            animation: scaleUp var(--modal-animation-duration) var(--animation-curve) forwards;
+        }
+
+        &.closing {
+            animation: scaleDown var(--modal-animation-duration) var(--animation-curve) forwards;
+        }
+
+        .body {
+            display: flex;
+            gap: var(--size-4);
+            flex-direction: column;
+            overflow: auto;
+
+            padding: corrected-text-padding(var(--size-5));
+        }
+
+        @media (prefers-reduced-motion:no-preference) {
+            @keyframes scaleUp {
+                from {
+                    transform: scale(0.8) translateY(60vh);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: scale(1) translateY(0px);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes scaleDown {
+                from {
+                    transform: scale(1) translateY(0px);
+                    opacity: 1;
+                }
+
+                to {
+                    transform: scale(0.8) translateY(60vh);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes fadeInBackdrop {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 50%;
+                }
+            }
+
+            @keyframes fadeOutBackdrop {
+                from {
+                    opacity: 50%;
+                }
+
+                to {
+                    opacity: 0%;
+                }
+            }
+        }
+    }
+}

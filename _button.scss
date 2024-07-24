@@ -1,0 +1,97 @@
+@import "../_functions.scss";
+
+:where(button, .btn) {
+    $op-color-num: 7;
+
+    padding: corrected-text-padding(0.75rem);
+    // padding: var(--size-2);
+    border-radius: var(--radius-3);
+    gap: var(--size-2);
+    box-shadow: var(--shadow-2);
+    text-align: center;
+    font-weight: 600;
+
+    transition: all 150ms var(--ease-out-1);
+
+    // Set default colors
+    $default-text-color: mix-colors(var(--btn-border-color), 15%, var(--text-1));
+    color: var(--btn-text-color, $default-text-color);
+    $default-bg-color: mix-colors(var(--btn-border-color));
+    background-color: var(--btn-bg-color, $default-bg-color);
+    border: 3px solid var(--btn-border-color);
+
+    // Vertically and horizontally center children
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.inline {
+        padding: corrected-text-padding(var(--size-2));
+        width: fit-content;
+    }
+
+    &.block {
+        width: 100%;
+    }
+
+    &.boring {
+        box-shadow: none;
+    }
+
+    &:disabled {
+        cursor: auto;
+        opacity: 75%;
+        background-color: transparent;
+
+        --btn-border-color: var(--gray-4);
+
+        @media (prefers-color-scheme: dark) {
+            --btn-border-color: var(--gray-9);
+        }
+    }
+
+    @media (prefers-reduced-motion:no-preference) {
+        &:where(:not(.no-hover, :disabled):hover) {
+            background-color: var(--btn-border-color);
+            box-shadow: var(--shadow-3);
+
+            color: var(--btn-text-hover-color, var(--btn-text-color));
+        }
+    }
+
+
+    /* Colors */
+    @mixin btn-colors($color) {
+        --btn-border-color: #{mix-colors( $color, 85%, var(--surface-1))};
+
+        --btn-text-color: #{mix-colors( $color, 35%, var(--text-1))};
+        --btn-text-hover-color: #{mix-colors( $color, 05%, white)};
+    }
+
+    @each $color-name in $open-props-colors {
+        &.#{$color-name} {
+            @include btn-colors(var(--#{$color-name}-#{$op-color-num}))
+        }
+
+        &.text-#{$color-name} {
+            box-shadow: none;
+            --btn-text-color: var(--#{$color-name}-9);
+
+            @media (prefers-color-scheme: dark) {
+                --btn-text-color: var(--#{$color-name}-4);
+            }
+
+            &:hover {
+                text-shadow: 1px 1px 0.1rem mix-colors(var(--btn-text-color), 50%);
+            }
+        }
+    }
+
+    &:where(.brand) {
+        @include btn-colors(var(--brand))
+    }
+
+    &:where(.delete) {
+        @include btn-colors(var(--red-8))
+    }
+}
