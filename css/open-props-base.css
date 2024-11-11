@@ -18,6 +18,8 @@
     font-family: var(--font-sans);
     line-height: var(--font-lineheight-3);
     scrollbar-color: var(--scrollthumb-color) transparent;
+    scroll-padding: var(--size-11);
+    overflow: auto;
 
     --text-bounding-box-size: 7px;
 
