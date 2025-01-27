@@ -221,8 +221,13 @@
 }
 
 :where(img, svg, video) {
-    block-size: auto;
-    max-inline-size: 100%
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    font-style: italic;
+    background-repeat: no-repeat;
+    background-size: cover;
+    shape-margin: 1rem;
 }
 
 :where(input, button, textarea, select),
